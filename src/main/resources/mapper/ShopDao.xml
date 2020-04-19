@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.shayne.wechat.web.dao.ShopDao">
+    <resultMap id="BaseResultMap" type="com.shayne.wechat.web.bean.Shop">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="country" jdbcType="VARCHAR" property="country"/>
+        <result column="province" jdbcType="VARCHAR" property="province"/>
+        <result column="city" jdbcType="VARCHAR" property="city"/>
+        <result column="district" jdbcType="VARCHAR" property="district"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.shayne.wechat.web.bean.ShopWithBLOBs">
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+        <result column="logo" jdbcType="LONGVARBINARY" property="logo"/>
+        <result column="pic" jdbcType="LONGVARBINARY" property="pic"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, `name`, country, province, city, district, address, update_time, create_time
+  </sql>
+    <sql id="Blob_Column_List">
+    description, logo, pic
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from shop
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <select id="getShops" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from shop
+        <where>
+            <!--<if test="name != null">-->
+                <!--or name like concat('%',#{name=,jdbcType=VARCHAR},'%')-->
+            <!--</if>-->
+            <!--<if test="country != null">-->
+            <!--and country=#{country,jdbcType=VARCHAR}-->
+            <!--</if>-->
+            <if test="province != null">
+                and province=#{province,jdbcType=VARCHAR}
+            </if>
+            <if test="city != null">
+                and city=#{city,jdbcType=VARCHAR}
+            </if>
+            <if test="district != null">
+                and district=#{district,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null">
+                or address like concat('%',#{address,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="description != null">
+                or description like concat('%',#{description,jdbcType=LONGVARCHAR},'%')
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from shop
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.shayne.wechat.web.bean.ShopWithBLOBs"
+            useGeneratedKeys="true">
+    insert into shop (`name`, country, province, 
+      city, district, address, 
+      update_time, create_time, description, 
+      logo, pic)
+    values (#{name,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, 
+      #{city,jdbcType=VARCHAR}, #{district,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}, 
+      #{logo,jdbcType=LONGVARBINARY}, #{pic,jdbcType=LONGVARBINARY})
+  </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.shayne.wechat.web.bean.ShopWithBLOBs" useGeneratedKeys="true">
+        insert into shop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="country != null">
+                country,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="logo != null">
+                logo,
+            </if>
+            <if test="pic != null">
+                pic,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="logo != null">
+                #{logo,jdbcType=LONGVARBINARY},
+            </if>
+            <if test="pic != null">
+                #{pic,jdbcType=LONGVARBINARY},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.shayne.wechat.web.bean.ShopWithBLOBs">
+        update shop
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="country != null">
+                country = #{country,jdbcType=VARCHAR},
+            </if>
+            <if test="province != null">
+                province = #{province,jdbcType=VARCHAR},
+            </if>
+            <if test="city != null">
+                city = #{city,jdbcType=VARCHAR},
+            </if>
+            <if test="district != null">
+                district = #{district,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=LONGVARCHAR},
+            </if>
+            <if test="logo != null">
+                logo = #{logo,jdbcType=LONGVARBINARY},
+            </if>
+            <if test="pic != null">
+                pic = #{pic,jdbcType=LONGVARBINARY},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.shayne.wechat.web.bean.ShopWithBLOBs">
+    update shop
+    set `name` = #{name,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=LONGVARCHAR},
+      logo = #{logo,jdbcType=LONGVARBINARY},
+      pic = #{pic,jdbcType=LONGVARBINARY}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="updateByPrimaryKey" parameterType="com.shayne.wechat.web.bean.Shop">
+    update shop
+    set `name` = #{name,jdbcType=VARCHAR},
+      country = #{country,jdbcType=VARCHAR},
+      province = #{province,jdbcType=VARCHAR},
+      city = #{city,jdbcType=VARCHAR},
+      district = #{district,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
