@@ -1,6 +1,5 @@
-package com.shayne.wechat.web.sevice;
+package com.shayne.wechat.web.service;
 
-import com.shayne.wechat.web.bean.Shop;
 import com.shayne.wechat.web.bean.ShopWithBLOBs;
 import com.shayne.wechat.web.dao.ShopDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,10 @@ public class ShopService {
     public List<ShopWithBLOBs> getShops(ShopWithBLOBs shop){
 
         return shopDao.getShops(shop);
+    }
+    public ShopWithBLOBs getShop(Integer id){
+
+        return shopDao.selectByPrimaryKey(id);
     }
 
 }

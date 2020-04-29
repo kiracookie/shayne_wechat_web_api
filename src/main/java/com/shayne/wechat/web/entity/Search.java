@@ -1,9 +1,10 @@
 package com.shayne.wechat.web.entity;
 
-import com.shayne.wechat.web.bean.Shop;
 import com.shayne.wechat.web.bean.ShopWithBLOBs;
 
-public class Search {
+import java.io.Serializable;
+
+public class Search implements Serializable {
     String key;
     String region;
 
@@ -25,10 +26,10 @@ public class Search {
 
     public void setRegion(String region) {
         String[] regions;
-        regions = region.replace("全部", "").split(",");
-        this.province = regions[0];
-        this.city = regions[1];
-        this.district = regions[2];
+        regions = region.split(",");
+        this.province = regions[0].replace("全部","");
+        this.city = regions[1].replace("全部","");
+        this.district = regions[2].replace("全部","");
         this.region = region;
     }
 
